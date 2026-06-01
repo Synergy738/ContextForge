@@ -22,9 +22,9 @@ class RatePage(QWidget):
         path_layout = QHBoxLayout()
         self.path_input = QLineEdit()
         self.path_input.setPlaceholderText("Path to your project...")
-        browse_btn = QPushButton("Browse")
+        self.browse_btn = QPushButton("Browse")
         path_layout.addWidget(self.path_input)
-        path_layout.addWidget(browse_btn)
+        path_layout.addWidget(self.browse_btn)
         layout.addLayout(path_layout)
 
         # Session label
@@ -50,7 +50,7 @@ class RatePage(QWidget):
         self.setLayout(layout)
 
     def _setup_connections(self):
-        browse_btn.clicked.connect(self._browse_folder)
+        self.browse_btn.clicked.connect(self._browse_folder)
         self.path_input.textChanged.connect(self._update_session_label)
         self.good_btn.clicked.connect(lambda: self._rate(1))
         self.bad_btn.clicked.connect(lambda: self._rate(0))

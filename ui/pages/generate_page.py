@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import (
 
 from core.analyzer import analyse
 from core.adapters import detect_ide, write_rules, IDE_CONFIG
-from core.generator import generate, EnvironmentError
+from core.generator import generate
 from core.storage import save_session
 from ui.widgets.rules_viewer import RulesViewer
 
@@ -92,9 +92,9 @@ class GeneratePage(QWidget):
         path_layout = QHBoxLayout()
         self.path_input = QLineEdit()
         self.path_input.setPlaceholderText("Path to your project...")
-        browse_btn = QPushButton("Browse")
+        self.browse_btn = QPushButton("Browse")
         path_layout.addWidget(self.path_input)
-        path_layout.addWidget(browse_btn)
+        path_layout.addWidget(self.browse_btn)
         layout.addLayout(path_layout)
 
         # Target IDE
@@ -131,7 +131,7 @@ class GeneratePage(QWidget):
         self.setLayout(layout)
 
     def _setup_connections(self):
-        browse_btn.clicked.connect(self._browse_folder)
+        self.browse_btn.clicked.connect(self._browse_folder)
         self.generate_btn.clicked.connect(self._generate)
 
         # Debounce IDE detection

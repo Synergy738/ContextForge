@@ -1,6 +1,6 @@
 import os
 
-import google.generativeai as genai
+from google import genai
 
 
 SYSTEM_PROMPT = """
@@ -18,11 +18,8 @@ def _get_model():
         raise EnvironmentError(
             "GEMINI_API_KEY is not set. Get a free key at aistudio.google.com"
         )
-    genai.configure(api_key=api_key)
-    return genai.GenerativeModel(
-        model_name="gemini-1.5-flash",
-        system_instruction=SYSTEM_PROMPT
-    )
+    client = genai.Client(api_key=api_key)
+    return client
 
 
 def _build_prompt(ctx, task: str, ide: str) -> str:
@@ -80,7 +77,11 @@ Do NOT include generic best practices. Output ONLY the rules file content. No pr
 
 def generate(ctx, task: str, ide: str = "Cursor") -> str:
     """Generate rules content using Gemini API."""
-    model = _get_model()
+    client = _get_model()
     prompt = _build_prompt(ctx, task, ide)
-    response = model.generate_content(prompt)
-    return response.text.strip()
+    response = client.models.generate_content(
+        model="gemini-1.5-flash",
+        contents=prompt,
+        system_instruction=SYSTEM_PROMPT
+    )
+    return response.text

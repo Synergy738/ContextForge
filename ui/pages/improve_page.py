@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import (
 
 from core.analyzer import analyse
 from core.adapters import write_rules, IDE_CONFIG
-from core.generator import generate, EnvironmentError
+from core.generator import generate
 from core.storage import save_session, get_patterns
 from ui.widgets.rules_viewer import RulesViewer
 
@@ -99,9 +99,9 @@ class ImprovePage(QWidget):
         path_layout = QHBoxLayout()
         self.path_input = QLineEdit()
         self.path_input.setPlaceholderText("Path to your project...")
-        browse_btn = QPushButton("Browse")
+        self.browse_btn = QPushButton("Browse")
         path_layout.addWidget(self.path_input)
-        path_layout.addWidget(browse_btn)
+        path_layout.addWidget(self.browse_btn)
         layout.addLayout(path_layout)
 
         # Load patterns button
@@ -135,7 +135,7 @@ class ImprovePage(QWidget):
         self.setLayout(layout)
 
     def _setup_connections(self):
-        browse_btn.clicked.connect(self._browse_folder)
+        self.browse_btn.clicked.connect(self._browse_folder)
         self.load_btn.clicked.connect(self._load_patterns)
         self.improve_btn.clicked.connect(self._regenerate)
 
